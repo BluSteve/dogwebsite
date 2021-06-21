@@ -8,11 +8,12 @@
               contain
               :src="require('@/assets/doge.jpg')"
               width="70"
+              @click="inSettings = true"
           />
         </router-link>
       </div>
       <v-spacer></v-spacer>
-      <router-link :to="inSettings ? '/' : '/settings'">
+      <router-link :to="inSettings ? '/':'/settings' ">
         <v-btn class="mx-1" @click="inSettings = !inSettings">
           <v-icon>mdi-cog-outline</v-icon>
         </v-btn>
@@ -30,7 +31,7 @@
 export default {
   name: 'App',
   data: () => ({
-    inSettings: false
-  }),
+    inSettings: true
+  })
 };
 </script>

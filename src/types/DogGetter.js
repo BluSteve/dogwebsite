@@ -1,4 +1,3 @@
-/* eslint-disable no-fallthrough */
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -48,6 +47,7 @@ function getDogs(dogNumber) {
                 case 0:
                     dogs = [];
                     _a.label = 1;
+                // eslint-disable-next-line no-fallthrough
                 case 1:
                     if (!(dogs.length < dogNumber)) return [3 /*break*/, 4];
                     return [4 /*yield*/, fetch('https://api.thedogapi.com/v1/images/search?limit=100')];
