@@ -18,8 +18,8 @@
         </v-chip>
       </template>
       <template v-slot:item.url="slotProps">
-        <a :href="slotProps.item.url">
-          <v-img class="dog-image" :src="slotProps.item.url" :alt="slotProps.item.name"/>
+        <a target="_blank" :href="slotProps.item.url">
+          <img class="dog-image" :src="slotProps.item.url" :alt="slotProps.item.name"/>
         </a>
       </template>
       <template v-slot:item.temperament="slotProps">
@@ -36,7 +36,7 @@
 import {getDogs} from "@/types/DogGetter.js";
 
 export default {
-  name: 'HelloWorld',
+  name: 'DogDisplay',
 
   data: () => ({
     dogNumber: 10,
