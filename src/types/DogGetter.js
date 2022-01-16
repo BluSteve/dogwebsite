@@ -47,7 +47,6 @@ function getDogs(dogNumber) {
                 case 0:
                     dogs = [];
                     _a.label = 1;
-                // eslint-disable-next-line no-fallthrough
                 case 1:
                     if (!(dogs.length < dogNumber)) return [3 /*break*/, 4];
                     return [4 /*yield*/, fetch('https://api.thedogapi.com/v1/images/search?limit=100')];

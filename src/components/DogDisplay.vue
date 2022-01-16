@@ -11,7 +11,14 @@
     </v-row>
     <v-data-table :items-per-page="15" :headers=headers :items=dogOutput class="elevation-1"
                   :footer-props="{showFirstLastPage: true, firstIcon: 'mdi-arrow-collapse-left', lastIcon: 'mdi-arrow-collapse-right'}"
-                  :loading=loadingDogs>
+                  :loading=loadingDogs :search="search">
+      <template v-slot:top>
+        <v-text-field
+            v-model="search"
+            label="Search"
+            class="mx-4"
+        ></v-text-field>
+      </template>
       <template v-slot:item.lifeSpan="slotProps">
         <v-chip :color=getChipColor(slotProps.item.lifeSpan) style="width:60px; justify-content: center"><p
             style="margin: auto 0; color: #FFFFFF">{{ slotProps.item.lifeSpan }}</p>
@@ -39,6 +46,7 @@ export default {
   name: 'DogDisplay',
 
   data: () => ({
+    search: '',
     dogNumber: 10,
     loadingDogs: false,
     dogOutput: [],
