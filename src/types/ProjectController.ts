@@ -1,12 +1,28 @@
-import {burl, Project} from "./OctopiTypes";
+import {burl, Client, Project, User} from "./OctopiTypes";
 
 export async function getProjects(): Promise<Project[]> {
-    // @ts-ignore
     const resp = await fetch(burl + '/project', {
         credentials: 'include'
     });
     const array: any[] = await resp.json();
-    console.log(array);
     array.forEach(x => x.cdate = new Date(x.cdate));
+    return array;
+}
+
+export async function getClients(pid: number): Promise<Client[]> {
+    const resp = await fetch(burl + '/project/clients?pid='+pid, {
+        credentials: 'include'
+    });
+    const array: any[] = await resp.json();
+    array.forEach(x => x.jdate = new Date(x.jdate));
+    return array;
+}
+
+export async function getAdmins(pid: number): Promise<User[]> {
+    const resp = await fetch(burl + '/project/admins?pid='+pid, {
+        credentials: 'include'
+    });
+    const array: any[] = await resp.json();
+    array.forEach(x => x.jdate = new Date(x.jdate));
     return array;
 }

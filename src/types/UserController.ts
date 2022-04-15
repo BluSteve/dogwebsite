@@ -25,4 +25,6 @@ export async function signup(username: string, password: string, name: string, e
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username, password, name, email, userType})
     });
+
+    return resp.status;
 }

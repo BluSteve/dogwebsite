@@ -59,9 +59,15 @@ export default {
     };
   },
   methods: {
-    uiSignup() {
-      signup(this.username, this.password, this.name, this.email,
-          this.isAdmin ? UserType.ADMIN : UserType.CLIENT).then();
+    async uiSignup() {
+      const status = await signup(this.username, this.password, this.name, this.email,
+          this.isAdmin ? UserType.ADMIN : UserType.CLIENT);
+      if (status === 200) {
+        alert('Sign up successful.');
+      }
+      else {
+        alert('Sign up failed!');
+      }
     },
   },
 };

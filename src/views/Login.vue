@@ -42,8 +42,11 @@ export default {
     };
   },
   methods: {
-    uiLogin() {
-      login(this.username, this.password).then(code => console.log(code));
+    async uiLogin() {
+      const code = await login(this.username, this.password);
+      if (code === 0) alert('Log in successful.');
+      else if (code === 1) alert('Wrong password!');
+      else if (code === 2) alert('User does not exist!');
     },
   },
 };

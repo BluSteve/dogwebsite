@@ -4,8 +4,9 @@ import Home from "@/views/Home";
 import Settings from "@/views/Settings.vue";
 import Login from "@/views/Login";
 import Feedback from "@/views/Feedback";
-import DogBrowser from "@/views/DogBrowser";
+import ProjectBrowser from "@/views/ProjectBrowser";
 import Signup from "@/views/Signup";
+import ProjectInfo from "@/components/ProjectInfo";
 
 Vue.use(VueRouter)
 
@@ -38,7 +39,13 @@ const routes = [
   {
     path: '/browser',
     name: 'Browser',
-    component: DogBrowser
+    component: ProjectBrowser
+  },
+  {
+    path: '/project/:pid',
+    name: 'project',
+    component: ProjectInfo,
+    props: true
   }
 ]
 
