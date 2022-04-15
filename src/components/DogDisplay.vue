@@ -39,8 +39,8 @@
   </v-container>
 </template>
 
-<script>
-import {getDogs} from "@/types/DogGetter.js";
+<script lang="ts">
+import {getDogs} from "../types/DogGetter";
 
 export default {
   name: 'DogDisplay',
