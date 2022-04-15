@@ -1,7 +1,7 @@
 <template>
   <v-container class="mt-4">
     <v-row justify='center'>
-      <v-data-table :items-per-page="15" :headers=headers :items=projects class="elevation-1"
+      <v-data-table :headers=headers :items=projects class="elevation-1"
                     @click:row="handleClick">
       </v-data-table>
     </v-row>
@@ -27,8 +27,8 @@ export default {
   },
 
   methods: {
-    handleClick(item: Project) {
-      
+    handleClick(item) {
+      this.$router.push({name: 'project', params: {pid: item.pid}});
     }
   }
 }
