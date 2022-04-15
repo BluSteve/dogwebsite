@@ -17,19 +17,14 @@
         </v-btn>
       </router-link>
       <v-spacer></v-spacer>
-      <router-link to="/feedback">
-        <v-btn class="mx-1">
-          <v-icon>mdi-typewriter</v-icon>
-        </v-btn>
-      </router-link>
       <router-link to="/login">
         <v-btn class="mx-1">
-          <v-icon>mdi-login</v-icon>
+          LOG IN
         </v-btn>
       </router-link>
-      <router-link :to="'/settings'">
+      <router-link to="/signup">
         <v-btn class="mx-1">
-          <v-icon>mdi-cog-outline</v-icon>
+          SIGN UP
         </v-btn>
       </router-link>
     </v-app-bar>

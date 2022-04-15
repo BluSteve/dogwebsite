@@ -5,6 +5,7 @@ import Settings from "@/views/Settings.vue";
 import Login from "@/views/Login";
 import Feedback from "@/views/Feedback";
 import DogBrowser from "@/views/DogBrowser";
+import Signup from "@/views/Signup";
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/signup',
+    name: 'Signup',
+    component: Signup
   },
   {
     path: '/feedback',

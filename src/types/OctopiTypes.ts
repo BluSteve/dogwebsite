@@ -1,8 +1,4 @@
 export const burl = 'http://localhost:8080';
-export const postHeaders = {'Content-Type': 'application/json'};
-export const getInit = {
-    headers: {'cookie': 'token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.d-uYW-1RBefhSpDhbMqcN2fNqb1JFHs5vu26FxhD_Bs'}, credentials: 'include'
-};
 
 export class Machine {
     mid: number;

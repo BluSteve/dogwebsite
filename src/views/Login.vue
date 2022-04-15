@@ -1,44 +1,38 @@
 <template>
-  <v-app >
+  <v-app>
     <v-main>
-      <v-container fluid fill-height>
-        <v-layout align-center justify-center>
-          <v-flex xs12 sm8 md4>
-            <v-card class="elevation-12">
-              <v-toolbar dark color="primary">
-                <v-toolbar-title>Login form</v-toolbar-title>
-              </v-toolbar>
-              <v-card-text>
-                <form ref="form" @submit.prevent="login()">
-                  <v-text-field
-                      v-model="username"
-                      name="username"
-                      label="Username"
-                      type="text"
-                      placeholder="username"
-                      required
-                  ></v-text-field>
-
-                  <v-text-field
-                      v-model="password"
-                      name="password"
-                      label="Password"
-                      type="password"
-                      placeholder="password"
-                      required
-                  ></v-text-field>
-                  <v-btn type="submit" class="mt-4" color="primary" value="log in">Login</v-btn>
-                </form>
-              </v-card-text>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
+      <v-layout justify-center>
+        <v-flex md2>
+          <v-card class="elevation-12">
+            <v-toolbar dark color="primary">
+              <v-toolbar-title>Login Form</v-toolbar-title>
+            </v-toolbar>
+            <v-card-text>
+              <form @submit.prevent="uiLogin()">
+                <v-text-field
+                    v-model="username"
+                    label="Username"
+                    required
+                />
+                <v-text-field
+                    type="password"
+                    v-model="password"
+                    label="Password"
+                    required
+                />
+                <v-btn type="submit" color="primary" class="mt-4">Login</v-btn>
+              </form>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
     </v-main>
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
+import {login} from "../types/UserController";
+
 export default {
   name: "Login",
   data() {
@@ -48,9 +42,8 @@ export default {
     };
   },
   methods: {
-    login() {
-      const { username } = this;
-      console.log(username + "logged in")
+    uiLogin() {
+      login(this.username, this.password).then(code => console.log(code));
     },
   },
 };
