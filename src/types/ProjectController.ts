@@ -37,3 +37,14 @@ export async function addProject(pname: string) {
 
     return resp.status;
 }
+
+export async function associate(uid: number, pid: number) {
+    const resp = await fetch(burl + '/project/associate', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({uid, pid})
+    });
+
+    return resp.status;
+}

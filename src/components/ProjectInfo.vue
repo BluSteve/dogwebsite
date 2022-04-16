@@ -13,7 +13,7 @@
           <v-container>
             <v-row>
               <v-text-field v-model="search" class="px-4" label="Search"></v-text-field>
-              <v-btn v-if=isAdmin color="primary" class="mt-2" @click=addUser>
+              <v-btn v-if=isAdmin color="primary" class="mt-2" @click=addUserD>
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
             </v-row>
@@ -77,12 +77,20 @@
         </v-btn>
       </v-card>
     </v-dialog>
+    <v-dialog v-model=addUserDialog width=unset>
+      <v-card class="pa-4">
+        <v-text-field label="UID" type="number" v-model=adduid required/>
+        <v-btn @click=addUser>
+          Add
+        </v-btn>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script lang="ts">
 
-import {getAdmins, getClients, getProjects} from "../types/ProjectController";
+import {associate, getAdmins, getClients, getProjects} from "../types/ProjectController";
 import {addRun, getRuns} from "../types/RunController";
 import InputDisplay from "./InputDisplay.vue";
 import {store} from "../types/OctopiTypes";
@@ -126,13 +134,15 @@ export default {
       tab: null,
       inputDialog: false,
       addRunDialog: false,
+      addUserDialog: false,
       runInputs: [],
       runInputsActual: [],
       runJarsActual: [],
       runJars: [],
       classpathfield: '',
       inputfield: '',
-      jarfield: ''
+      jarfield: '',
+      adduid: null
     }
   },
 
@@ -153,8 +163,11 @@ export default {
     goToJars() {
       this.$router.push({name: 'jars', params: {pid: this.pid}});
     },
-    addUser() {
-
+    addUserD() {
+      this.addUserDialog = true;
+    },
+    async addUser() {
+      if (await associate(this.adduid, this.pid) === 200) alert("User added!");
     },
     async addRunD() {
       this.addRunDialog = true;
@@ -166,8 +179,8 @@ export default {
     async addRun() {
       const runIndex = this.runJars.indexOf(this.jarfield);
       const inputIndex = this.runInputs.indexOf(this.inputfield);
-      await addRun(this.pid, this.runInputsActual[inputIndex].ihash, this.runJarsActual[runIndex].jpid,
-          this.runJarsActual[runIndex].jhash, this.classpathfield)
+      if (await addRun(this.pid, this.runInputsActual[inputIndex].ihash, this.runJarsActual[runIndex].jpid,
+          this.runJarsActual[runIndex].jhash, this.classpathfield) === 200) alert("Run added!");
     }
   }
 }
