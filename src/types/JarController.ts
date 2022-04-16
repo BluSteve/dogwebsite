@@ -1,7 +1,7 @@
 import {burl, Jar} from "./OctopiTypes";
 
 export async function getJars(pid?: number): Promise<Jar[]> {
-    const resp = await fetch(burl + '/jar?pid=' + pid, {
+    const resp = await fetch(burl + '/jar' + (pid ? '?pid=' + pid : ''), {
         credentials: 'include'
     });
     const array = (await resp.json());

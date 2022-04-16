@@ -5,7 +5,7 @@
       <v-spacer/>
       <v-btn class="mx-1" color="primary" v-on:click="inputDialog = true">Inputs</v-btn>
       <v-btn class="mx-1" color="primary" v-on:click="goToJars">Jars</v-btn>
-      <v-btn class="mx-1" color="primary">Machines</v-btn>
+      <v-btn class="mx-1" color="primary" v-on:click="goToMachines">Machines</v-btn>
     </v-row>
     <v-row class="mt-8">
       <v-col cols="6">
@@ -162,6 +162,9 @@ export default {
     },
     goToJars() {
       this.$router.push({name: 'jars', params: {pid: this.pid}});
+    },
+    goToMachines() {
+      this.$router.push({name: 'machines', params: {pid: this.pid}});
     },
     addUserD() {
       this.addUserDialog = true;
