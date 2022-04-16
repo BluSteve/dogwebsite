@@ -5,12 +5,25 @@
                     @click:row="handleClick">
       </v-data-table>
     </v-row>
+    <v-row justify='center' class="mt-4">
+      <v-btn v-if=isAdmin @click=openProjectDialog>
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-row>
+    <v-dialog v-model=projectDialog width=unset>
+      <v-card class="pa-4">
+        <v-text-field label="Project name" v-model=pname required/>
+        <v-btn @click=addProject>
+          Add
+        </v-btn>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script lang="ts">
-import {getProjects} from "../types/ProjectController";
-import {Project} from "../types/OctopiTypes";
+import {addProject, getProjects} from "../types/ProjectController";
+import {Project, store} from "../types/OctopiTypes";
 
 export default {
   name: 'ProjectDisplay',
@@ -19,7 +32,10 @@ export default {
     projects: [],
     headers: [{text: 'PID', value: 'pid'},
       {text: 'Name', value: 'pname'},
-      {text: 'Date Created', value: 'cdate'}]
+      {text: 'Date Created', value: 'cdate'}],
+    isAdmin: store.isAdmin,
+    projectDialog: false,
+    pname: ''
   }),
 
   async mounted() {
@@ -29,6 +45,12 @@ export default {
   methods: {
     handleClick(item) {
       this.$router.push({name: 'project', params: {pid: item.pid}});
+    },
+    openProjectDialog() {
+      this.projectDialog = true;
+    },
+    async addProject() {
+      if (await addProject(this.pname) === 200) alert("Project added!");
     }
   }
 }

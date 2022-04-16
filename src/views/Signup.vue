@@ -43,9 +43,9 @@
   </v-app>
 </template>
 
-<script lang="ts">
-import {signup} from "../types/UserController";
-import {UserType} from "../types/OctopiTypes";
+<script>
+import {getIsAdmin, getUserByToken, signup} from "../types/UserController";
+import {store, UserType} from "../types/OctopiTypes";
 
 export default {
   name: "Login",
@@ -64,10 +64,12 @@ export default {
           this.isAdmin ? UserType.ADMIN : UserType.CLIENT);
       if (status === 200) {
         alert('Sign up successful.');
-      }
-      else {
+      } else {
         alert('Sign up failed!');
       }
+      store.isAdmin = await getIsAdmin();
+      store.user = await getUserByToken();
+      console.log(store);
     },
   },
 };

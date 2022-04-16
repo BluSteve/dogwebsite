@@ -10,7 +10,7 @@ export async function getProjects(pid?: number): Promise<Project[]> {
 }
 
 export async function getClients(pid: number): Promise<Client[]> {
-    const resp = await fetch(burl + '/project/clients?pid='+pid, {
+    const resp = await fetch(burl + '/project/clients?pid=' + pid, {
         credentials: 'include'
     });
     const array: any[] = await resp.json();
@@ -19,10 +19,21 @@ export async function getClients(pid: number): Promise<Client[]> {
 }
 
 export async function getAdmins(pid: number): Promise<User[]> {
-    const resp = await fetch(burl + '/project/admins?pid='+pid, {
+    const resp = await fetch(burl + '/project/admins?pid=' + pid, {
         credentials: 'include'
     });
     const array: any[] = await resp.json();
     array.forEach(x => x.jdate = new Date(x.jdate));
     return array;
+}
+
+export async function addProject(pname: string) {
+    const resp = await fetch(burl + '/project', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({pname})
+    });
+
+    return resp.status;
 }
