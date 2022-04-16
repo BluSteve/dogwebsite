@@ -1,16 +1,6 @@
 <template>
   <v-app>
     <v-app-bar app color="primary">
-      <div class="d-flex align-center">
-        <router-link to="/">
-          <v-img
-              class="shrink mr-2"
-              contain
-              :src="require('@/assets/doge.jpg')"
-              width="70"
-          />
-        </router-link>
-      </div>
       <router-link to="/browser">
         <v-btn class="mx-1">
           PROJECTS
@@ -25,6 +15,11 @@
       <router-link to="/signup">
         <v-btn class="mx-1">
           SIGN UP
+        </v-btn>
+      </router-link>
+      <router-link :to="inSettings ? '/':'/settings' ">
+        <v-btn class="mx-1" @click="inSettings = !inSettings">
+          <v-icon>mdi-cog-outline</v-icon>
         </v-btn>
       </router-link>
     </v-app-bar>
