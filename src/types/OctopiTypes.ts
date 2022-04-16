@@ -76,3 +76,8 @@ export enum UserType {
     ADMIN,
     CLIENT
 }
+
+export const store = {
+    isAdmin: undefined,
+    user: undefined
+};

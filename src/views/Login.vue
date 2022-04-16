@@ -30,8 +30,9 @@
   </v-app>
 </template>
 
-<script lang="ts">
-import {login} from "../types/UserController";
+<script>
+import {getIsAdmin, getUserByToken, login} from "../types/UserController";
+import {store} from "../types/OctopiTypes";
 
 export default {
   name: "Login",
@@ -47,6 +48,9 @@ export default {
       if (code === 0) alert('Log in successful.');
       else if (code === 1) alert('Wrong password!');
       else if (code === 2) alert('User does not exist!');
+      store.isAdmin = await getIsAdmin();
+      store.user = await getUserByToken();
+      console.log(store);
     },
   },
 };

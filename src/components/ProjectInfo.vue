@@ -10,7 +10,14 @@
     <v-row class="mt-8">
       <v-col cols="6">
         <v-card class="px-2">
-          <v-text-field v-model="search" class="px-4" label="Search"></v-text-field>
+          <v-container>
+            <v-row>
+              <v-text-field v-model="search" class="px-4" label="Search"></v-text-field>
+              <v-btn v-if=isAdmin color="primary" class="mt-2" @click=addUser>
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+            </v-row>
+          </v-container>
           <v-tabs v-model="tab">
             <v-tab href="#client-tab">Clients</v-tab>
             <v-tab href="#admin-tab">Admins</v-tab>
@@ -31,25 +38,44 @@
       </v-col>
       <v-col>
         <v-card class="px-2">
-          <v-text-field v-model="runSearch" class="px-4" label="Search"></v-text-field>
-          <v-data-table :items=runs :headers=runHeaders :search=runSearch>
-            <template v-slot:item.ihash="{item}">
-              {{ item.ihash = item.ihash.slice(0, 8) }}
-            </template>
-            <template v-slot:item.jhash="{item}">
-              {{ item.jhash = item.jhash.slice(0, 8) }}
-            </template>
-            <template v-slot:item.startRun="{item}">
-              <v-btn v-on:click="startRun(item)">
-                <v-icon>mdi-play</v-icon>
+          <v-container>
+            <v-row>
+              <v-text-field v-model="runSearch" label="Search" class="px-4"></v-text-field>
+              <v-btn v-if=!isAdmin color="primary" class="mt-2" @click=addRunD>
+                <v-icon>mdi-plus</v-icon>
               </v-btn>
-            </template>
-          </v-data-table>
+            </v-row>
+            <v-row>
+              <v-data-table :items=runs :headers=runHeaders :search=runSearch>
+                <template v-slot:item.ihash="{item}">
+                  {{ item.ihash = item.ihash.slice(0, 8) }}
+                </template>
+                <template v-slot:item.jhash="{item}">
+                  {{ item.jhash = item.jhash.slice(0, 8) }}
+                </template>
+                <template v-slot:item.startRun="{item}">
+                  <v-btn v-on:click="startRun(item)">
+                    <v-icon>mdi-play</v-icon>
+                  </v-btn>
+                </template>
+              </v-data-table>
+            </v-row>
+          </v-container>
         </v-card>
       </v-col>
     </v-row>
     <v-dialog v-model=inputDialog>
       <InputDisplay :pid=this.pid></InputDisplay>
+    </v-dialog>
+    <v-dialog v-model=addRunDialog width=unset>
+      <v-card class="pa-4">
+        <v-select label="Input" :items=runInputs v-model=inputfield required/>
+        <v-select label="Jar" :items=runJars v-model=jarfield required/>
+        <v-text-field label="Classpath" v-model=classpathfield required/>
+        <v-btn @click=addRun>
+          Add
+        </v-btn>
+      </v-card>
     </v-dialog>
   </v-container>
 </template>
@@ -57,8 +83,11 @@
 <script lang="ts">
 
 import {getAdmins, getClients, getProjects} from "../types/ProjectController";
-import {getRuns} from "../types/RunController";
+import {addRun, getRuns} from "../types/RunController";
 import InputDisplay from "./InputDisplay.vue";
+import {store} from "../types/OctopiTypes";
+import {getInputs} from "../types/InputController";
+import {getJars} from "../types/JarController";
 
 export default {
   components: {InputDisplay},
@@ -77,6 +106,7 @@ export default {
       runSearch: '',
       project: null,
       runs: [],
+      isAdmin: store.isAdmin,
       runHeaders: [
         {text: 'Run ID', value: 'rid'},
         {text: 'Input Hash', value: 'ihash'},
@@ -94,7 +124,15 @@ export default {
       adminHeaders: userHeaders,
       acLoading: false,
       tab: null,
-      inputDialog: false
+      inputDialog: false,
+      addRunDialog: false,
+      runInputs: [],
+      runInputsActual: [],
+      runJarsActual: [],
+      runJars: [],
+      classpathfield: '',
+      inputfield: '',
+      jarfield: ''
     }
   },
 
@@ -114,6 +152,22 @@ export default {
     },
     goToJars() {
       this.$router.push({name: 'jars', params: {pid: this.pid}});
+    },
+    addUser() {
+
+    },
+    async addRunD() {
+      this.addRunDialog = true;
+      this.runInputsActual = await getInputs(this.pid);
+      this.runInputs = this.runInputsActual.map(i => i.ihash.slice(0, 8));
+      this.runJarsActual = await getJars(this.pid);
+      this.runJars = this.runJarsActual.map(j => j.jpid + ": " + j.jhash.slice(0, 8));
+    },
+    async addRun() {
+      const runIndex = this.runJars.indexOf(this.jarfield);
+      const inputIndex = this.runInputs.indexOf(this.inputfield);
+      await addRun(this.pid, this.runInputsActual[inputIndex].ihash, this.runJarsActual[runIndex].jpid,
+          this.runJarsActual[runIndex].jhash, this.classpathfield)
     }
   }
 }

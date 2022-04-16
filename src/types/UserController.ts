@@ -8,10 +8,26 @@ export async function getUsers(): Promise<User[]> {
 }
 
 export async function getUser(uid: number): Promise<User> {
-    const resp = await fetch(burl + '/user');
+    const resp = await fetch(burl + '/user?uid=' + uid);
     const json = await resp.json();
     json.jdate = new Date(json.jdate);
     return json;
+}
+
+export async function getUserByToken(): Promise<User> {
+    const resp = await fetch(burl + '/user/by-token', {
+        credentials: 'include'
+    });
+    const json = await resp.json();
+    json.jdate = new Date(json.jdate);
+    return json;
+}
+
+export async function getIsAdmin(): Promise<boolean> {
+    const resp = await fetch(burl + '/user/type',{
+        credentials: 'include'
+    });
+    return await resp.text() === 'true';
 }
 
 export async function login(username: string, password: string): Promise<number> {
