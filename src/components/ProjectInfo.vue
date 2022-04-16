@@ -4,24 +4,25 @@
       <h2>{{ project.pname }}</h2>
       <v-spacer/>
       <v-btn class="mx-1" color="primary" v-on:click="inputDialog = true">Inputs</v-btn>
-      <v-btn class="mx-1" color="primary">Jars</v-btn>
+      <v-btn class="mx-1" color="primary" v-on:click="goToJars">Jars</v-btn>
       <v-btn class="mx-1" color="primary">Machines</v-btn>
     </v-row>
     <v-row class="mt-8">
       <v-col cols="6">
-        <v-card>
+        <v-card class="px-2">
+          <v-text-field v-model="search" class="px-4" label="Search"></v-text-field>
           <v-tabs v-model="tab">
             <v-tab href="#client-tab">Clients</v-tab>
             <v-tab href="#admin-tab">Admins</v-tab>
           </v-tabs>
           <v-tabs-items v-model="tab">
             <v-tab-item value="client-tab">
-              <v-data-table :items=clients :headers=clientHeaders :loading=acLoading>
+              <v-data-table :items=clients :headers=clientHeaders :loading=acLoading :search=search>
 
               </v-data-table>
             </v-tab-item>
             <v-tab-item value="admin-tab">
-              <v-data-table :items=admins :headers=adminHeaders>
+              <v-data-table :items=admins :headers=adminHeaders :loading=acLoading :search=search>
 
               </v-data-table>
             </v-tab-item>
@@ -29,8 +30,9 @@
         </v-card>
       </v-col>
       <v-col>
-        <v-card>
-          <v-data-table :items=runs :headers=runHeaders>
+        <v-card class="px-2">
+          <v-text-field v-model="runSearch" class="px-4" label="Search"></v-text-field>
+          <v-data-table :items=runs :headers=runHeaders :search=runSearch>
             <template v-slot:item.ihash="{item}">
               {{ item.ihash = item.ihash.slice(0, 8) }}
             </template>
@@ -71,6 +73,8 @@ export default {
       {text: 'Email', value: 'email'}
     ];
     return {
+      search: '',
+      runSearch: '',
       project: null,
       runs: [],
       runHeaders: [
@@ -107,6 +111,9 @@ export default {
   methods: {
     startRun(item) {
 
+    },
+    goToJars() {
+      this.$router.push({name: 'jars', params: {pid: this.pid}});
     }
   }
 }

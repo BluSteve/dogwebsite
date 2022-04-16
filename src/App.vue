@@ -13,7 +13,7 @@
       </div>
       <router-link to="/browser">
         <v-btn class="mx-1">
-          <v-icon>mdi-magnify</v-icon>
+          PROJECTS
         </v-btn>
       </router-link>
       <v-spacer></v-spacer>

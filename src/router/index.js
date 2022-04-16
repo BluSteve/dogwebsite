@@ -7,6 +7,7 @@ import Feedback from "@/views/Feedback";
 import ProjectBrowser from "@/views/ProjectBrowser";
 import Signup from "@/views/Signup";
 import ProjectInfo from "@/components/ProjectInfo";
+import JarDisplay from "@/components/JarDisplay";
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,12 @@ const routes = [
     path: '/project/:pid',
     name: 'project',
     component: ProjectInfo,
+    props: true
+  },
+  {
+    path: '/jars/:pid',
+    name: 'jars',
+    component: JarDisplay,
     props: true
   }
 ]
