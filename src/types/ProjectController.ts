@@ -1,7 +1,7 @@
 import {burl, Client, Project, User} from "./OctopiTypes";
 
-export async function getProjects(): Promise<Project[]> {
-    const resp = await fetch(burl + '/project', {
+export async function getProjects(pid?: number): Promise<Project[]> {
+    const resp = await fetch(burl + '/project' + (pid ? '?pid=' + pid : ''), {
         credentials: 'include'
     });
     const array: any[] = await resp.json();

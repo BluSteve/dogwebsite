@@ -1,6 +1,13 @@
 <template>
   <v-container class="mt-4">
     <v-row>
+      <h2>{{ project.pname }}</h2>
+      <v-spacer/>
+      <v-btn class="mx-1" color="primary" v-on:click="inputDialog = true">Inputs</v-btn>
+      <v-btn class="mx-1" color="primary">Jars</v-btn>
+      <v-btn class="mx-1" color="primary">Machines</v-btn>
+    </v-row>
+    <v-row class="mt-8">
       <v-col cols="6">
         <v-card>
           <v-tabs v-model="tab">
@@ -9,7 +16,7 @@
           </v-tabs>
           <v-tabs-items v-model="tab">
             <v-tab-item value="client-tab">
-              <v-data-table :items=clients :headers=clientHeaders>
+              <v-data-table :items=clients :headers=clientHeaders :loading=acLoading>
 
               </v-data-table>
             </v-tab-item>
@@ -21,41 +28,86 @@
           </v-tabs-items>
         </v-card>
       </v-col>
+      <v-col>
+        <v-card>
+          <v-data-table :items=runs :headers=runHeaders>
+            <template v-slot:item.ihash="{item}">
+              {{ item.ihash = item.ihash.slice(0, 8) }}
+            </template>
+            <template v-slot:item.jhash="{item}">
+              {{ item.jhash = item.jhash.slice(0, 8) }}
+            </template>
+            <template v-slot:item.startRun="{item}">
+              <v-btn v-on:click="startRun(item)">
+                <v-icon>mdi-play</v-icon>
+              </v-btn>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-col>
     </v-row>
+    <v-dialog v-model=inputDialog>
+      <InputDisplay :pid=this.pid></InputDisplay>
+    </v-dialog>
   </v-container>
 </template>
 
 <script lang="ts">
 
 import {getAdmins, getClients, getProjects} from "../types/ProjectController";
+import {getRuns} from "../types/RunController";
+import InputDisplay from "./InputDisplay.vue";
 
 export default {
+  components: {InputDisplay},
   props: ['pid'],
   name: "ProjectInfo",
 
   data() {
     const userHeaders = [
-          {text: 'UID', value: 'uid'},
-          {text: 'Username', value: 'username'},
-          {text: 'Full name', value: 'name'},
-          {text: 'Email', value: 'email'}
-        ];
+      {text: 'UID', value: 'uid'},
+      {text: 'Username', value: 'username'},
+      {text: 'Full Name', value: 'name'},
+      {text: 'Email', value: 'email'}
+    ];
     return {
       project: null,
+      runs: [],
+      runHeaders: [
+        {text: 'Run ID', value: 'rid'},
+        {text: 'Input Hash', value: 'ihash'},
+        {text: 'Jar PID', value: 'jpid'},
+        {text: 'Jar Hash', value: 'jhash'},
+        {text: 'Created By', value: 'uid'},
+        {text: 'Classpath', value: 'classpath'},
+        {text: 'Output Hash', value: 'ohash'},
+        {text: 'Output JSON', value: 'ojson'},
+        {text: 'Start Run', value: 'startRun'}
+      ],
       clients: [],
       clientHeaders: userHeaders.concat({text: 'Hours used', value: 'hours_used'}),
       admins: [],
       adminHeaders: userHeaders,
-      tab: null
+      acLoading: false,
+      tab: null,
+      inputDialog: false
     }
   },
 
   async mounted() {
-    this.project = (await getProjects()).filter(p => p.pid === this.pid);
+    this.project = (await getProjects(this.pid))[0];
+    this.runs = await getRuns(this.pid);
+
+    this.acLoading = true;
     this.clients = await getClients(this.pid);
     this.admins = await getAdmins(this.pid);
+    this.acLoading = false;
   },
 
-  methods: {}
+  methods: {
+    startRun(item) {
+
+    }
+  }
 }
 </script>

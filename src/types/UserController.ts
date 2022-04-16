@@ -1,10 +1,17 @@
 import {User, burl, UserType} from "./OctopiTypes";
 
 export async function getUsers(): Promise<User[]> {
-    const resp = await fetch(burl + '/user');
+    const resp = await fetch(burl + '/user/users');
     const array: any[] = await resp.json();
     array.forEach(x => x.jdate = new Date(x.jdate));
     return array;
+}
+
+export async function getUser(uid: number): Promise<User> {
+    const resp = await fetch(burl + '/user');
+    const json = await resp.json();
+    json.jdate = new Date(json.jdate);
+    return json;
 }
 
 export async function login(username: string, password: string): Promise<number> {

@@ -64,6 +64,14 @@ export class Run {
     ojson: string;
 }
 
+export class Running {
+    pid: number;
+    rid: number;
+    mname: string;
+    start_time: Date;
+    end_time: Date;
+}
+
 export enum UserType {
     ADMIN,
     CLIENT
