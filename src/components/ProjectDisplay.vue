@@ -24,6 +24,7 @@
 <script lang="ts">
 import {addProject, getProjects} from "../types/ProjectController";
 import {Project, store} from "../types/OctopiTypes";
+import {getIsAdmin} from "../types/UserController";
 
 export default {
   name: 'ProjectDisplay',
@@ -33,12 +34,13 @@ export default {
     headers: [{text: 'PID', value: 'pid'},
       {text: 'Name', value: 'pname'},
       {text: 'Date Created', value: 'cdate'}],
-    isAdmin: store.isAdmin,
+    isAdmin: false,
     projectDialog: false,
     pname: ''
   }),
 
   async mounted() {
+    this.isAdmin = await getIsAdmin();
     this.projects = await getProjects();
   },
 

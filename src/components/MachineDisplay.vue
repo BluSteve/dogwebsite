@@ -5,7 +5,7 @@
         <h2>Machines</h2>
         <v-data-table :headers=headers :items=machines class="elevation-1" @click:row="handleClick">
           <template v-slot:item.jhash="{item}">
-            {{ item.jhash = item.jhash.slice(0, 8) }}
+            {{ item.jhash = item.jhash ? item.jhash.slice(0, 8) : null }}
           </template>
         </v-data-table>
       </v-col>
@@ -29,6 +29,7 @@
 
 import {deleteFromProject, getMachines} from "../types/MachineController";
 import {store} from "../types/OctopiTypes";
+import {getIsAdmin} from "../types/UserController";
 
 export default {
   name: "MachineDisplay",
@@ -38,7 +39,7 @@ export default {
     activeMachines: [],
     selectedMachine: null,
     machineDialog: false,
-    isAdmin: store.isAdmin,
+    isAdmin: false,
     headers: [{text: 'MID', value: 'mid'},
       {text: 'Machine Name', value: 'mname'},
       {text: 'Cores', value: 'cores'},
@@ -59,6 +60,7 @@ export default {
   }),
   async mounted() {
     this.machines = await getMachines(this.pid);
+    this.isAdmin = await getIsAdmin();
     this.activeMachines = await getMachines(this.pid, true);
   },
   methods: {

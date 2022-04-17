@@ -96,6 +96,7 @@ import InputDisplay from "./InputDisplay.vue";
 import {store} from "../types/OctopiTypes";
 import {getInputs} from "../types/InputController";
 import {getJars} from "../types/JarController";
+import {getIsAdmin} from "../types/UserController";
 
 export default {
   components: {InputDisplay},
@@ -114,7 +115,7 @@ export default {
       runSearch: '',
       project: null,
       runs: [],
-      isAdmin: store.isAdmin,
+      isAdmin: false,
       runHeaders: [
         {text: 'Run ID', value: 'rid'},
         {text: 'Input Hash', value: 'ihash'},
@@ -147,6 +148,8 @@ export default {
   },
 
   async mounted() {
+    this.isAdmin = await getIsAdmin();
+
     this.project = (await getProjects(this.pid))[0];
     this.runs = await getRuns(this.pid);
 

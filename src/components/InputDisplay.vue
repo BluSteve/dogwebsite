@@ -1,18 +1,20 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col v-for='item in inputs' :key='item.ihash'>
-        <InputInfo :input='item' />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col align="right">
-        <v-file-input @change="addInput" accept=".json" label="Upload input JSON">
+  <v-card>
+    <v-container>
+      <v-row>
+        <v-col v-for='item in inputs' :key='item.ihash'>
+          <InputInfo :input='item'/>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col align="right">
+          <v-file-input @change="addInput" accept=".json" label="Upload input JSON">
 
-        </v-file-input>
-      </v-col>
-    </v-row>
-  </v-container>
+          </v-file-input>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-card>
 </template>
 
 <script lang="ts">
